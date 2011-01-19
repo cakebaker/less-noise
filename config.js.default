@@ -1,0 +1,10 @@
+var config = function () {
+    return {
+        oauthToken: '',
+        oauthTokenSecret: '',
+        consumerKey: '',
+        consumerSecret: ''
+    }
+};
+
+exports.config = config;
