@@ -22,7 +22,9 @@ Twitter.prototype.stream = function (parser) {
     
     request.on('response', function (response) {
         response.setEncoding('utf8');
-        response.on('data', parser.parse);
+        response.on('data', function (chunk) {
+            parser.parse(chunk);
+        });
     });
 
     request.end();
