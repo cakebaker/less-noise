@@ -15,17 +15,26 @@ Parser.prototype.parse = function (chunk) {
 
     if (chunk != '\r\n') {
         console.log(sys.inspect(chunk));
-        object = JSON.parse(chunk);
-        if (object.friends) {
-            this.emit('friends', object.friends);
-        } else if (object.text) {
-            if (object.retweeted_status) {
-                this.emit('retweet', object);
-            } else {
-                this.emit('status', object);
-            }
+        try {
+            object = JSON.parse(chunk);
+            this._emit(object);
+        } catch (e) {
+            console.log(e.toString());
+            return false;
         }
     }
 
     return false;
+}
+
+Parser.prototype._emit = function (object) {
+    if (object.friends) {
+        this.emit('friends', object.friends);
+    } else if (object.text) {
+        if (object.retweeted_status) {
+            this.emit('retweet', object);
+        } else {
+            this.emit('status', object);
+        }
+    }
 }

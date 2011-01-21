@@ -10,6 +10,10 @@ exports['Parser#parse'] = testCase({
         test.strictEqual(false, this.parser.parse('\r\n'));
         test.done();
     },
+    'ignore invalid json': function (test) {
+        test.strictEqual(false, this.parser.parse('{"invalid":'));
+        test.done();
+    },
     'recognize a friends response': function (test) {
         test.expect(1);
         this.parser.on('friends', function (friends) {
