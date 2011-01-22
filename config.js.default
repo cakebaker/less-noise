@@ -3,7 +3,8 @@ var config = function () {
         oauthToken: '',
         oauthTokenSecret: '',
         consumerKey: '',
-        consumerSecret: ''
+        consumerSecret: '',
+        port: 3000
     }
 };
 
