@@ -1,4 +1,5 @@
 var express = require('express'),
+    io = require('socket.io'),
     config = require('./config').config(),
     parser = require('./parser').Parser(),
     twitter = require('./twitter').Twitter(config);
@@ -11,5 +12,10 @@ app.get('/', function (request, response) {
 });
 
 app.listen(config.port);
+var socket = io.listen(app);
+
+parser.on('status', function (status) {
+    socket.broadcast(status);
+});
 
 twitter.stream(parser);
