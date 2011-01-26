@@ -15,29 +15,29 @@ exports['Parser#parse'] = testCase({
         test.done();
     },
     'recognize a friends response': function (test) {
-        test.expect(1);
+        test.expect(2);
         this.parser.on('friends', function (friends) {
             test.deepEqual([1, 2, 3], friends);
         });
-        this.parser.parse('{"friends":[1,2,3]}');
+        test.strictEqual(true, this.parser.parse('{"friends":[1,2,3]}'));
         test.done();
     },
     'recognize a status': function (test) {
-        test.expect(1);
+        test.expect(2);
         this.parser.on('status', function (status) {
             var expectedObject = { text: "foo" };
             test.deepEqual(expectedObject, status);
         });
-        this.parser.parse('{"text":"foo"}');
+        test.strictEqual(true, this.parser.parse('{"text":"foo"}'));
         test.done();
     },
     'recognize a retweet': function (test) {
-        test.expect(1);
+        test.expect(2);
         this.parser.on('retweet', function (retweet) {
             var expectedObject = { text: "foo", retweeted_status: {} };
             test.deepEqual(expectedObject, retweet);
         });
-        this.parser.parse('{"text":"foo","retweeted_status":{}}');
+        test.strictEqual(true, this.parser.parse('{"text":"foo","retweeted_status":{}}'));
         test.done();
     }
 });

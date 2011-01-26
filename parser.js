@@ -18,9 +18,9 @@ Parser.prototype.parse = function (chunk) {
         try {
             object = JSON.parse(chunk);
             this._emit(object);
+            return true;
         } catch (e) {
             console.log(e.toString());
-            return false;
         }
     }
 
