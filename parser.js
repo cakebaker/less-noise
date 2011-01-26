@@ -5,6 +5,7 @@ function Parser() {
     if (!(this instanceof Parser)) return new Parser();
 
     events.EventEmitter.call(this);
+    this.failedChunk = '';
 }
 
 sys.inherits(Parser, events.EventEmitter)
@@ -20,6 +21,14 @@ Parser.prototype.parse = function (chunk) {
             this._emit(object);
             return true;
         } catch (e) {
+            if (this.failedChunk != '') {
+                try {
+                    object = JSON.parse(this.failedChunk + chunk);
+                    this._emit(object);
+                    return true;
+                } catch (e) {}
+            }
+            this.failedChunk = chunk;
             console.log(e.toString());
         }
     }
