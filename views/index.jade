@@ -1,5 +1,10 @@
 p welcome to less-noise :)
 #tweets
+script(id: 'tweetTemplate', type: 'text/html')
+  .tweet
+    img(src: '${profile_image_url}', height: 48, width: 48)
+    strong \${screen_name}
+    p \${text}
 script(src: '/js/jquery-1.4.4.min.js')
 script(src: '/js/jquery.tmpl.min.js')
 script(src: '/socket.io/socket.io.js')
