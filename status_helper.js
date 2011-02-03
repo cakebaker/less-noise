@@ -13,11 +13,17 @@ function getUrlsAsArray(status) {
 exports.getUrlsAsArray = getUrlsAsArray;
 
 function hasUrls(status) {
-    if (status.entities.urls.length > 0) {
-        return true;
-    }
-
-    return false;
+    return hasElements(status.entities.urls);
 }
 
 exports.hasUrls = hasUrls;
+
+function hasUserMentions(status) {
+    return hasElements(status.entities.user_mentions);
+}
+
+exports.hasUserMentions = hasUserMentions;
+
+function hasElements(array) {
+    return (array.length > 0);
+}

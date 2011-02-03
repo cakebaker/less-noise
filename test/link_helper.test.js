@@ -19,7 +19,7 @@ exports['autolink of a status'] = testCase({
         test.done();
     },
     'text with a shortened link': function (test) {
-        var status = { text: 'a link: http://ex.am/ple', entities: { urls: [ { url: 'http://ex.am/ple', expanded_url: URL_ONE } ] } };
+        var status = { text: 'a link: http://ex.am/ple', entities: { urls: [ { url: 'http://ex.am/ple', expanded_url: URL_ONE } ], user_mentions: [] } };
         linkHelper.autolink(status);
         test.equals('a link: <a href="' + URL_ONE + '">' + URL_ONE + '</a>', status.text);
         test.done();
@@ -28,6 +28,12 @@ exports['autolink of a status'] = testCase({
         var status = { text: 'two links: ' + URL_ONE + ' ' + URL_TWO, entities: createUrls([URL_ONE, URL_TWO]) };
         linkHelper.autolink(status);
         test.equals('two links: <a href="' + URL_ONE + '">' + URL_ONE + '</a> <a href="' + URL_TWO + '">' + URL_TWO + '</a>', status.text);
+        test.done();
+    },
+    'text mentioning a user': function (test) {
+        var status = { text: 'hey @testuser', entities: { urls: [], user_mentions: [ { screen_name: 'testuser' } ] } };
+        linkHelper.autolink(status);
+        test.equals('hey @<a href="http://twitter.com/testuser">testuser</a>', status.text);
         test.done();
     }
 });
@@ -47,7 +53,7 @@ exports['autolink of a retweet'] = testCase({
         test.done();
     },
     'text with a shortened link': function (test) {
-        var retweet = { retweeted_status: { text: 'a link: http://ex.am/ple', entities: { urls: [ { url: 'http://ex.am/ple', expanded_url: URL_ONE } ] } } };
+        var retweet = { retweeted_status: { text: 'a link: http://ex.am/ple', entities: { urls: [ { url: 'http://ex.am/ple', expanded_url: URL_ONE } ], user_mentions: [] } } };
         linkHelper.autolink(retweet);
         test.equals('a link: <a href="' + URL_ONE + '">' + URL_ONE + '</a>', retweet.retweeted_status.text);
         test.done();
@@ -56,6 +62,12 @@ exports['autolink of a retweet'] = testCase({
         var retweet = { retweeted_status: { text: 'two links: ' + URL_ONE + ' ' + URL_TWO, entities: createUrls([URL_ONE, URL_TWO]) } };
         linkHelper.autolink(retweet);
         test.equals('two links: <a href="' + URL_ONE + '">' + URL_ONE + '</a> <a href="' + URL_TWO + '">' + URL_TWO + '</a>', retweet.retweeted_status.text);
+        test.done();
+    },
+    'text mentioning a user': function (test) {
+        var retweet = { retweeted_status: { text: 'hey @testuser', entities: { urls: [], user_mentions: [ { screen_name: 'testuser' } ] } } };
+        linkHelper.autolink(retweet);
+        test.equals('hey @<a href="http://twitter.com/testuser">testuser</a>', retweet.retweeted_status.text);
         test.done();
     }
 });
@@ -74,6 +86,7 @@ function createUrls(urls) {
     }
 
     return {
-        urls: urlObjects
+        urls: urlObjects,
+        user_mentions: []
     };
 }

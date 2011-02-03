@@ -28,3 +28,16 @@ exports['hasUrls'] = testCase({
         test.done();
     }
 });
+
+exports['hasUserMentions'] = testCase({
+    'status without mentioning a user': function (test) {
+        var status = { text: 'text without mentioning a user', entities: { user_mentions: [] } };
+        test.strictEqual(false, statusHelper.hasUserMentions(status));
+        test.done();
+    },
+    'status mentioning a user': function (test) {
+        var status = { text: 'hey @testuser', entities: { user_mentions: [ { screen_name: 'testuser' } ] } };
+        test.strictEqual(true, statusHelper.hasUserMentions(status));
+        test.done();
+    }
+});
