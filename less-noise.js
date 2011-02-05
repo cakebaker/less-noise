@@ -1,10 +1,10 @@
 var express = require('express'),
     io = require('socket.io'),
     config = require('./config').config(),
-    Expander = require('./tweet_url_expander').TweetUrlExpander,
-    linkHelper = require('./link_helper'),
-    parser = require('./parser').Parser(),
-    twitter = require('./twitter').Twitter(config);
+    Expander = require('./lib/tweet_url_expander').TweetUrlExpander,
+    linkHelper = require('./lib/link_helper'),
+    parser = require('./lib/parser').Parser(),
+    twitter = require('./lib/twitter').Twitter(config);
 
 var expander = new Expander();
 

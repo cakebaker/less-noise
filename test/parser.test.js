@@ -1,5 +1,5 @@
 var testCase = require('nodeunit').testCase,
-    Parser = require('../parser').Parser;
+    Parser = require('../lib/parser').Parser;
 
 exports['Parser#parse'] = testCase({
     setUp: function (callback) {

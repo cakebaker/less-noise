@@ -1,5 +1,5 @@
 var testCase = require('nodeunit').testCase,
-    TweetUrlExpander = require('../tweet_url_expander').TweetUrlExpander;
+    TweetUrlExpander = require('../lib/tweet_url_expander').TweetUrlExpander;
 
 exports['expand'] = testCase({
     setUp: function (callback) {

@@ -1,5 +1,5 @@
 var testCase = require('nodeunit').testCase,
-    SingleUrlExpander = require('../single_url_expander').SingleUrlExpander;
+    SingleUrlExpander = require('../lib/single_url_expander').SingleUrlExpander;
 
 const START_URL = 'http://example.com';
 const REDIRECT_URL = 'http://example.org';

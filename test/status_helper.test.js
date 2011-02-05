@@ -1,5 +1,5 @@
 var testCase = require('nodeunit').testCase,
-    statusHelper = require('../status_helper');
+    statusHelper = require('../lib/status_helper');
 
 exports['getUrlsAsArray'] = testCase({
     'status without urls': function (test) {

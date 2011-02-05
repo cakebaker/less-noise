@@ -1,5 +1,5 @@
 var testCase = require('nodeunit').testCase,
-    linkHelper = require('../link_helper');
+    linkHelper = require('../lib/link_helper');
 
 const URL_ONE = 'http://example.com';
 const URL_TWO = 'http://example.org';
