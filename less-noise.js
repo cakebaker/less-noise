@@ -18,12 +18,8 @@ app.get('/', function (request, response) {
 app.listen(config.port);
 var socket = io.listen(app);
 
-parser.on('status', function (status) {
-    expander.expand(status);
-});
-
-parser.on('retweet', function (retweet) {
-    expander.expand(retweet);
+parser.on('tweet', function (tweet) {
+    expander.expand(tweet);
 });
 
 expander.on('expanded', function (tweet) {
