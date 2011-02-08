@@ -63,6 +63,14 @@ exports['_handleResponse'] = testCase({
         });
         this.expander._handleResponse(createRedirectResponse('/expanded/url'));
         test.done();
+    },
+    '302 response with same location': function (test) {
+        test.expect(1);
+        this.expander.on('expanded', function (originalUrl, expandedUrl) {
+            test.equals(START_URL, expandedUrl);
+        });
+        this.expander._handleResponse(createRedirectResponse(START_URL));
+        test.done();
     }
 });
 
