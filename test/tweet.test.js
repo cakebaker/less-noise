@@ -17,6 +17,35 @@ exports['Tweet#getStatus'] = testCase({
     }
 });
 
+exports['Tweet#getUrls'] = testCase({
+    'returns an empty array from a status without urls': function (test) {
+        var data = { text: 'hello world', entities: { urls: [] } };
+        var tweet = new Tweet(data);
+        test.deepEqual([], tweet.getUrls());
+        test.done();
+    },
+    'returns an empty array from a retweet without urls': function (test) {
+        var data = { retweeted_status: { text: 'hello world', entities: { urls: [] } } };
+        var tweet = new Tweet(data);
+        test.deepEqual([], tweet.getUrls());
+        test.done();
+    },
+    'returns an array with the status\'s urls': function (test) {
+        const URL = 'http://example.com';
+        var data = { text: 'an url: http://example.com', entities: { urls: [ { url: URL } ] } };
+        var tweet = new Tweet(data);
+        test.deepEqual([URL], tweet.getUrls());
+        test.done();
+    },
+    'returns an array with the retweet\'s urls': function (test) {
+        const URL = 'http://example.com';
+        var data = { retweeted_status: { text: 'an url: http://example.com', entities: { urls: [ { url: URL } ] } } };
+        var tweet = new Tweet(data);
+        test.deepEqual([URL], tweet.getUrls());
+        test.done();
+    }
+});
+
 exports['Tweet#hasUrls'] = testCase({
     'returns false for status without urls': function (test) {
         var data = { text: 'hello world', entities: { urls: [] } };
