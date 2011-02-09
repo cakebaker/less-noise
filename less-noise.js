@@ -2,6 +2,7 @@ var express = require('express'),
     io = require('socket.io'),
     config = require('./config').config(),
     Expander = require('./lib/tweet_url_expander').TweetUrlExpander,
+    Tweet = require('./lib/tweet').Tweet,
     linkHelper = require('./lib/link_helper'),
     parser = require('./lib/parser').Parser(),
     urlFilter = require('./lib/url_filter').UrlFilter(config),
@@ -19,7 +20,9 @@ app.get('/', function (request, response) {
 app.listen(config.port);
 var socket = io.listen(app);
 
-parser.on('tweet', function (tweet) {
+parser.on('tweet', function (data) {
+    var tweet = new Tweet(data);
+
     if (urlFilter.accept(tweet)) {
         expander.expand(tweet);
     }
