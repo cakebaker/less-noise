@@ -5,7 +5,7 @@ var config = function () {
         consumerKey: '',
         consumerSecret: '',
         port: 3000,
-        domainsToFilter: ['4sq.com', 'instagr.am', 'youtu.be']
+        domainsToFilter: ['4sq.com', 'gowal.la', 'instagr.am', 'rnkr.com', 'tcrn.ch', 'youtu.be', 'youtube.com']
     }
 };
 
