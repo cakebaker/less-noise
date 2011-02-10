@@ -5,14 +5,14 @@ $(document).ready(function () {
         var data;
 
         if (!tweet.retweeted_status) {
-            data = { screen_name: tweet.user.screen_name,
-                     profile_image_url: tweet.user.profile_image_url,
-                     text: tweet.text
+            data = { screen_name: tweet.data.user.screen_name,
+                     profile_image_url: tweet.data.user.profile_image_url,
+                     text: tweet.data.text
             };
         } else {
-            data = { screen_name: tweet.retweeted_status.user.screen_name,
-                     profile_image_url: tweet.retweeted_status.user.profile_image_url,
-                     text: tweet.retweeted_status.text
+            data = { screen_name: tweet.data.retweeted_status.user.screen_name,
+                     profile_image_url: tweet.data.retweeted_status.user.profile_image_url,
+                     text: tweet.data.retweeted_status.text
             };
         }
 
