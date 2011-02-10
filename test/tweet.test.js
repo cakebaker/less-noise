@@ -1,5 +1,82 @@
-var testCase = require('nodeunit').testCase,
+var sys = require('sys'),
+    events = require('events'),
+    testCase = require('nodeunit').testCase,
     Tweet = require('../lib/tweet').Tweet;
+
+exports['Tweet#expandUrls'] = testCase({
+    'sends expanded event for status without urls': function (test) {
+        test.expect(1);
+        var data = { text: 'hello world', entities: { urls: [] } };
+        var tweet = new Tweet(data);
+        var expander = new MockExpander();
+        expander.on('expanded', function (tweet) {
+            test.ok(true);
+        });
+        tweet.expandUrls(expander);
+        test.done();
+    },
+    'sends expanded event for retweet without urls': function (test) {
+        test.expect(1);
+        var data = { retweeted_status: { text: 'hello world', entities: { urls: [] } } };
+        var tweet = new Tweet(data);
+        var expander = new MockExpander();
+        expander.on('expanded', function (tweet) {
+            test.ok(true);
+        });
+        tweet.expandUrls(expander);
+        test.done();
+    },
+    'sets expanded_url of status with url': function (test) {
+        test.expect(1);
+        var data = { text: 'an url: http://example.com', entities: { urls: [ { url: 'http://example.com' } ] } };
+        var tweet = new Tweet(data);
+        var expander = new MockExpander(['http://example.com'], ['http://example.com/expanded']);
+        expander.on('expanded', function (tweet) {
+            var status = tweet.getStatus();
+            test.strictEqual('http://example.com/expanded', status.entities.urls[0].expanded_url);
+        });
+        tweet.expandUrls(expander);
+        test.done();
+    },
+    'sets expanded_url of retweet with url': function (test) {
+        test.expect(1);
+        var data = { retweeted_status: { text: 'an url: http://example.com', entities: { urls: [ { url: 'http://example.com' } ] } } };
+        var tweet = new Tweet(data);
+        var expander = new MockExpander(['http://example.com'], ['http://example.com/expanded']);
+        expander.on('expanded', function (tweet) {
+            var status = tweet.getStatus();
+            test.strictEqual('http://example.com/expanded', status.entities.urls[0].expanded_url);
+        });
+        tweet.expandUrls(expander);
+        test.done();
+    },
+    'sets expanded_url of status with urls': function (test) {
+        test.expect(2);
+        var data = { text: 'two urls: http://example.com http://example.org', entities: { urls: [ { url: 'http://example.com' }, { url: 'http://example.org' } ] } };
+        var tweet = new Tweet(data);
+        var expander = new MockExpander(['http://example.org', 'http://example.com'], ['http://example.org/expanded', 'http://example.com/expanded']);
+        expander.on('expanded', function (tweet) {
+            var status = tweet.getStatus();
+            test.strictEqual('http://example.com/expanded', status.entities.urls[0].expanded_url);
+            test.strictEqual('http://example.org/expanded', status.entities.urls[1].expanded_url);
+        });
+        tweet.expandUrls(expander);
+        test.done();
+    },
+    'sets expanded_url of retweet with urls': function (test) {
+        test.expect(2);
+        var data = { retweeted_status: { text: 'two urls: http://example.com http://example.org', entities: { urls: [ { url: 'http://example.com' }, { url: 'http://example.org' } ] } } };
+        var tweet = new Tweet(data);
+        var expander = new MockExpander(['http://example.org', 'http://example.com'], ['http://example.org/expanded', 'http://example.com/expanded']);
+        expander.on('expanded', function (tweet) {
+            var status = tweet.getStatus();
+            test.strictEqual('http://example.com/expanded', status.entities.urls[0].expanded_url);
+            test.strictEqual('http://example.org/expanded', status.entities.urls[1].expanded_url);
+        });
+        tweet.expandUrls(expander);
+        test.done();
+    }
+});
 
 exports['Tweet#getStatus'] = testCase({
     'returns status': function (test) {
@@ -87,3 +164,15 @@ exports['Tweet#isRetweet'] = testCase({
         test.done();
     }
 });
+
+function MockExpander(originalUrls, expandedUrls) {
+    this.originalUrls = originalUrls;
+    this.expandedUrls = expandedUrls;
+    events.EventEmitter.call(this);
+}
+
+sys.inherits(MockExpander, events.EventEmitter);
+
+MockExpander.prototype.expand = function (urls) {
+    this.emit('allUrlsExpanded', this.originalUrls, this.expandedUrls);
+}
