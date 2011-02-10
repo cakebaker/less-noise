@@ -3,6 +3,41 @@ var sys = require('sys'),
     testCase = require('nodeunit').testCase,
     Tweet = require('../lib/tweet').Tweet;
 
+exports['Tweet#autolink'] = testCase({
+    'links url in status': function (test) {
+        var data = { text: 'an url: http://example.com', entities: { urls: [ { url: 'http://example.com', expanded_url: 'http://example.com/expanded' } ], user_mentions: [] } };
+        var tweet = new Tweet(data);
+        tweet.autolink();
+        var status = tweet.getStatus();
+        test.strictEqual('an url: <a href="http://example.com/expanded">http://example.com/expanded</a>', status.text);
+        test.done();
+    },
+    'links url in retweet': function (test) {
+        var data = { retweeted_status: { text: 'an url: http://example.com', entities: { urls: [ { url: 'http://example.com', expanded_url: 'http://example.com/expanded' } ], user_mentions: [] } } };
+        var tweet = new Tweet(data);
+        tweet.autolink();
+        var status = tweet.getStatus();
+        test.strictEqual('an url: <a href="http://example.com/expanded">http://example.com/expanded</a>', status.text);
+        test.done();
+    },
+    'links mentioned user in status': function (test) {
+        var data = { text: 'hello @test', entities: { urls: [], user_mentions: [ { screen_name: 'test' } ] } };
+        var tweet = new Tweet(data);
+        tweet.autolink();
+        var status = tweet.getStatus();
+        test.strictEqual('hello @<a href="http://twitter.com/test">test</a>', status.text);
+        test.done();
+    },
+    'links mentioned user in retweet': function (test) {
+        var data = { retweeted_status: { text: 'hello @test', entities: { urls: [], user_mentions: [ { screen_name: 'test' } ] } } };
+        var tweet = new Tweet(data);
+        tweet.autolink();
+        var status = tweet.getStatus();
+        test.strictEqual('hello @<a href="http://twitter.com/test">test</a>', status.text);
+        test.done();
+    }
+});
+
 exports['Tweet#expandUrls'] = testCase({
     'sends expanded event for status without urls': function (test) {
         test.expect(1);
@@ -78,6 +113,37 @@ exports['Tweet#expandUrls'] = testCase({
     }
 });
 
+exports['Tweet#getExpandedUrls'] = testCase({
+    'returns an empty array from a status without urls': function (test) {
+        var data = { text: 'hello world', entities: { urls: [] } };
+        var tweet = new Tweet(data);
+        test.deepEqual([], tweet.getExpandedUrls());
+        test.done();
+    },
+    'returns an empty array from a retweet without urls': function (test) {
+        var data = { retweeted_status: { text: 'hello world', entities: { urls: [] } } };
+        var tweet = new Tweet(data);
+        test.deepEqual([], tweet.getExpandedUrls());
+        test.done();
+    },
+    'returns an array with the status\'s expanded urls': function (test) {
+        const URL = 'http://example.com';
+        const EXPANDED_URL = 'http://example.com/expanded';
+        var data = { text: 'an url: http://example.com', entities: { urls: [ { url: URL, expanded_url: EXPANDED_URL } ] } };
+        var tweet = new Tweet(data);
+        test.deepEqual([EXPANDED_URL], tweet.getExpandedUrls());
+        test.done();
+    },
+    'returns an array with the retweet\'s expanded urls': function (test) {
+        const URL = 'http://example.com';
+        const EXPANDED_URL = 'http://example.com/expanded';
+        var data = { retweeted_status: { text: 'an url: http://example.com', entities: { urls: [ { url: URL, expanded_url: EXPANDED_URL } ] } } };
+        var tweet = new Tweet(data);
+        test.deepEqual([EXPANDED_URL], tweet.getExpandedUrls());
+        test.done();
+    }
+});
+
 exports['Tweet#getStatus'] = testCase({
     'returns status': function (test) {
         var data = { text: 'hello world' };
@@ -119,6 +185,33 @@ exports['Tweet#getUrls'] = testCase({
         var data = { retweeted_status: { text: 'an url: http://example.com', entities: { urls: [ { url: URL } ] } } };
         var tweet = new Tweet(data);
         test.deepEqual([URL], tweet.getUrls());
+        test.done();
+    }
+});
+
+exports['Tweet#getUserMentions'] = testCase({
+    'returns an empty array from a status without user mentions': function (test) {
+        var data = { text: 'hello world', entities: { user_mentions: [] } };
+        var tweet = new Tweet(data);
+        test.deepEqual([], tweet.getUserMentions());
+        test.done();
+    },
+    'returns an empty array from a retweet without user mentions': function (test) {
+        var data = { retweeted_status: { text: 'hello world', entities: { user_mentions: [] } } };
+        var tweet = new Tweet(data);
+        test.deepEqual([], tweet.getUserMentions());
+        test.done();
+    },
+    'returns an array with the users mentioned in the status': function (test) {
+        var data = { text: 'hello @test', entities: { user_mentions: [ { screen_name: 'test' } ] } };
+        var tweet = new Tweet(data);
+        test.deepEqual(['test'], tweet.getUserMentions());
+        test.done();
+    },
+    'returns an array with the users mentioned in the retweet': function (test) {
+        var data = { retweeted_status: { text: 'hello @test', entities: { user_mentions: [ { screen_name: 'test' } ] } } };
+        var tweet = new Tweet(data);
+        test.deepEqual(['test'], tweet.getUserMentions());
         test.done();
     }
 });

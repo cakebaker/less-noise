@@ -24,12 +24,12 @@ parser.on('tweet', function (data) {
     var tweet = new Tweet(data);
 
     if (urlFilter.accept(tweet)) {
-        expander.expand(tweet);
+        tweet.expandUrls(expander);
     }
 });
 
 expander.on('expanded', function (tweet) {
-    linkHelper.autolink(tweet);
+    tweet.autolink();
     socket.broadcast(tweet);
 });
 
