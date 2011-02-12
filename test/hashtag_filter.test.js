@@ -1,4 +1,5 @@
 var testCase = require('nodeunit').testCase,
+    factory = require('./tweet_factory'),
     Tweet = require('../lib/tweet').Tweet,
     filter = require('../lib/hashtag_filter');
 
@@ -11,18 +12,36 @@ exports['HashtagFilter#accept'] = testCase({
         callback();
     },
     'accepts tweet without hashtags': function (test) {
-        var tweet = new Tweet({ text: 'hello world', entities: { hashtags: [] } });
-        test.strictEqual(true, this.hashtagFilter.accept(tweet));
+        var tweets = [factory.createStatus, factory.createRetweet];
+        var i, tweet;
+
+        for (i = 0; i < tweets.length; i++) {
+            tweet = tweets[i].call(null);
+            test.strictEqual(true, this.hashtagFilter.accept(tweet));
+        }
+
         test.done();
     },
     'accepts tweet with hashtag not in filter list': function (test) {
-        var tweet = new Tweet({ text: 'hello #world', entities: { hashtags: [ { text: 'world' } ] } });
-        test.strictEqual(true, this.hashtagFilter.accept(tweet));
+        var tweets = [factory.createStatusWithHashtags, factory.createRetweetWithHashtags];
+        var i, tweet;
+
+        for (i = 0; i < tweets.length; i++) {
+            tweet = tweets[i].call(null, ['test']);
+            test.strictEqual(true, this.hashtagFilter.accept(tweet));
+        }
+
         test.done();
     },
-    'doesn\'t accept tweet with hashtag in filter list': function (test) {
-        var tweet = new Tweet({ text: 'an #unwanted hastag', entities: { hashtags: [ { text: 'unwanted' } ] } });
-        test.strictEqual(false, this.hashtagFilter.accept(tweet));
+    'rejects tweet with hashtag in filter list': function (test) {
+        var tweets = [factory.createStatusWithHashtags, factory.createRetweetWithHashtags];
+        var i, tweet;
+
+        for (i = 0; i < tweets.length; i++) {
+            tweet = tweets[i].call(null, [UNWANTED_HASHTAG]);
+            test.strictEqual(false, this.hashtagFilter.accept(tweet));
+        }
+
         test.done();
-    },
+    }
 });

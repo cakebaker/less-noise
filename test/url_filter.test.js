@@ -1,4 +1,5 @@
 var testCase = require('nodeunit').testCase,
+    factory = require('./tweet_factory'),
     Tweet = require('../lib/tweet').Tweet,
     filter = require('../lib/url_filter');
 
@@ -11,23 +12,39 @@ exports['UrlFilter#accept'] = testCase({
         callback();
     },
     'accepts tweet without urls': function (test) {
-        var tweet = new Tweet({ text: 'hello world', entities: { urls: [] } });
-        test.strictEqual(true, this.urlFilter.accept(tweet));
+        var tweets = [factory.createStatus, factory.createRetweet];
+        var i, tweet;
+
+        for (i = 0; i < tweets.length; i++) {
+            tweet = tweets[i].call(null);
+            test.strictEqual(true, this.urlFilter.accept(tweet));
+        }
+
         test.done();
     },
     'accepts tweet with url not in filter list': function (test) {
-        var tweet = new Tweet({ text: 'an url: http://example.com', entities: { urls: [ { url: 'http://example.com' } ] } });
-        test.strictEqual(true, this.urlFilter.accept(tweet));
+        var tweets = [factory.createStatusWithUrls, factory.createRetweetWithUrls];
+        var i, tweet;
+
+        for (i = 0; i < tweets.length; i++) {
+            tweet = tweets[i].call(null, ['http://example.com']);
+            test.strictEqual(true, this.urlFilter.accept(tweet));
+        }
+
         test.done();
     },
-    'doesn\'t accept tweet with http url in filter list': function (test) {
-        var tweet = new Tweet({ text: 'an url: http://' + UNWANTED_DOMAIN, entities: { urls: [ { url: 'http://' + UNWANTED_DOMAIN } ] } });
-        test.strictEqual(false, this.urlFilter.accept(tweet));
-        test.done();
-    },
-    'doesn\'t accept tweet with https url in filter list': function (test) {
-        var tweet = new Tweet({ text: 'an url: https://' + UNWANTED_DOMAIN, entities: { urls: [ { url: 'https://' + UNWANTED_DOMAIN } ] } });
-        test.strictEqual(false, this.urlFilter.accept(tweet));
+    'rejects tweet with url in filter list': function (test) {
+        var unwantedUrls = [['http://' + UNWANTED_DOMAIN], ['https://' + UNWANTED_DOMAIN]];
+        var tweets = [factory.createStatusWithUrls, factory.createRetweetWithUrls];
+        var i, j, tweet;
+
+        for (i = 0; i < tweets.length; i++) {
+            for (j = 0; j < unwantedUrls.length; j++) {
+                tweet = tweets[i].call(null, unwantedUrls[j]);
+                test.strictEqual(false, this.urlFilter.accept(tweet));
+            }
+        }
+
         test.done();
     }
 });
