@@ -157,6 +157,33 @@ exports['Tweet#getExpandedUrls'] = testCase({
     }
 });
 
+exports['Tweet#getHashtags'] = testCase({
+    'returns an empty for a status without hashtags': function (test) {
+        var data = { text: 'hello world', entities: { hashtags: [] } };
+        var tweet = new Tweet(data);
+        test.deepEqual([], tweet.getHashtags());
+        test.done();
+    },
+    'returns an empty for a retweet without hashtags': function (test) {
+        var data = { retweeted_status: { text: 'hello world', entities: { hashtags: [] } } };
+        var tweet = new Tweet(data);
+        test.deepEqual([], tweet.getHashtags());
+        test.done();
+    },
+    'returns an array with the status\' hashtags': function (test) {
+        var data = { text: 'hello #world', entities: { hashtags: [ { text: 'world' } ] } };
+        var tweet = new Tweet(data);
+        test.deepEqual(['world'], tweet.getHashtags());
+        test.done();
+    },
+    'returns an array with the retweet\'s hashtags': function (test) {
+        var data = { retweeted_status: { text: 'hello #world', entities: { hashtags: [ { text: 'world' } ] } } };
+        var tweet = new Tweet(data);
+        test.deepEqual(['world'], tweet.getHashtags());
+        test.done();
+    }
+});
+
 exports['Tweet#getStatus'] = testCase({
     'returns status': function (test) {
         var data = { text: 'hello world' };
@@ -186,7 +213,7 @@ exports['Tweet#getUrls'] = testCase({
         test.deepEqual([], tweet.getUrls());
         test.done();
     },
-    'returns an array with the status\'s urls': function (test) {
+    'returns an array with the status\' urls': function (test) {
         const URL = 'http://example.com';
         var data = { text: 'an url: http://example.com', entities: { urls: [ { url: URL } ] } };
         var tweet = new Tweet(data);
