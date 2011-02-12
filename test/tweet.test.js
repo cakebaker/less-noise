@@ -110,6 +110,19 @@ exports['Tweet#expandUrls'] = testCase({
         });
         tweet.expandUrls(expander);
         test.done();
+    },
+    'cleans expanded urls': function (test) {
+        test.expect(2);
+        var data = { text: 'two urls: http://example.com http://example.org', entities: { urls: [ { url: 'http://example.com' }, { url: 'http://example.org' } ] } };
+        var tweet = new Tweet(data);
+        var expander = new MockExpander(['http://example.org', 'http://example.com'], ['http://example.org?utm_source=source', 'http://example.com?test=testvalue&utm_medium=medium']);
+        expander.on('expanded', function (tweet) {
+            var status = tweet.getStatus();
+            test.strictEqual('http://example.com?test=testvalue', status.entities.urls[0].expanded_url);
+            test.strictEqual('http://example.org', status.entities.urls[1].expanded_url);
+        });
+        tweet.expandUrls(expander);
+        test.done();
     }
 });
 
