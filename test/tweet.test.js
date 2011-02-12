@@ -229,6 +229,33 @@ exports['Tweet#getUserMentions'] = testCase({
     }
 });
 
+exports['Tweet#hasHashtags'] = testCase({
+    'returns false for status without hashtags': function (test) {
+        var data = { text: 'hello world', entities: { hashtags: [] } };
+        var tweet = new Tweet(data);
+        test.strictEqual(false, tweet.hasHashtags());
+        test.done();
+    },
+    'returns false for retweet without hashtags': function (test) {
+        var data = { retweeted_status: { text: 'hello world', entities: { hashtags: [] } } };
+        var tweet = new Tweet(data);
+        test.strictEqual(false, tweet.hasHashtags());
+        test.done();
+    },
+    'returns true for status with a hashtag': function (test) {
+        var data = { text: 'hello #world', entities: { hashtags: [ { text: 'world' } ] } };
+        var tweet = new Tweet(data);
+        test.strictEqual(true, tweet.hasHashtags());
+        test.done();
+    },
+    'returns true for retweet with a hashtag': function (test) {
+        var data = { retweeted_status: { text: 'hello #world', entities: { hashtags: [ { text: 'world' } ] } } };
+        var tweet = new Tweet(data);
+        test.strictEqual(true, tweet.hasHashtags());
+        test.done();
+    }
+});
+
 exports['Tweet#hasUrls'] = testCase({
     'returns false for status without urls': function (test) {
         var data = { text: 'hello world', entities: { urls: [] } };
