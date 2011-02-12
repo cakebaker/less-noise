@@ -4,7 +4,7 @@ $(document).ready(function () {
     socket.on('message', function (tweet) {
         var data;
 
-        if (!tweet.retweeted_status) {
+        if (!tweet.data.retweeted_status) {
             data = { screen_name: tweet.data.user.screen_name,
                      profile_image_url: tweet.data.user.profile_image_url,
                      text: tweet.data.text
