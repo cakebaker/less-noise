@@ -6,6 +6,7 @@ var express = require('express'),
     linkHelper = require('./lib/link_helper'),
     parser = require('./lib/parser').Parser(),
     urlFilter = require('./lib/url_filter').UrlFilter(config),
+    hashtagFilter = require('./lib/hashtag_filter').HashtagFilter(config),
     twitter = require('./lib/twitter').Twitter(config);
 
 var expander = new Expander();
@@ -23,8 +24,10 @@ var socket = io.listen(app);
 parser.on('tweet', function (data) {
     var tweet = new Tweet(data);
 
-    if (urlFilter.accept(tweet)) {
-        tweet.expandUrls(expander);
+    if (hashtagFilter.accept(tweet)) {
+        if (urlFilter.accept(tweet)) {
+            tweet.expandUrls(expander);
+        }
     }
 });
 
