@@ -14,24 +14,6 @@ exports['UrlAdapter#hasQueryString'] = testCase({
     }
 });
 
-exports['UrlAdapter#isEmptyQueryString'] = testCase({
-    'returns true for url with query string without params': function (test) {
-        var url = new Url('http://example.com?');
-        test.strictEqual(true, url.isEmptyQueryString());
-        test.done();
-    },
-    'returns false for url without query string': function (test) {
-        var url = new Url('http://example.com');
-        test.strictEqual(false, url.isEmptyQueryString());
-        test.done();
-    },
-    'returns false for url with query string containing params': function (test) {
-        var url = new Url('http://example.com?test=value');
-        test.strictEqual(false, url.isEmptyQueryString());
-        test.done();
-    }
-});
-
 exports['UrlAdapter#removeParam'] = testCase({
     'removing param from url without query string': function (test) {
         var url = new Url('http://example.com');
