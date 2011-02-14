@@ -1,6 +1,5 @@
-var sys = require('sys'),
-    events = require('events'),
-    testCase = require('nodeunit').testCase,
+var testCase = require('nodeunit').testCase,
+    MockExpander = require('../test/mock_expander').MockExpander,
     Tweet = require('../lib/tweet').Tweet;
 
 exports['Tweet#autolink'] = testCase({
@@ -324,15 +323,3 @@ exports['Tweet#isRetweet'] = testCase({
         test.done();
     }
 });
-
-function MockExpander(originalUrls, expandedUrls) {
-    this.originalUrls = originalUrls;
-    this.expandedUrls = expandedUrls;
-    events.EventEmitter.call(this);
-}
-
-sys.inherits(MockExpander, events.EventEmitter);
-
-MockExpander.prototype.expand = function (urls) {
-    this.emit('allUrlsExpanded', this.originalUrls, this.expandedUrls);
-}
