@@ -1,7 +1,7 @@
 var testCase = require('nodeunit').testCase,
-    MockExpander = require('../test/mock_expander').MockExpander,
-    factory = require('./tweet_factory'),
-    Tweet = require('../lib/tweet').Tweet;
+    MockExpander = require('../utils/mock_expander').MockExpander,
+    factory = require('../utils/tweet_factory'),
+    Tweet = require('../../lib/tweet').Tweet;
 
 exports['Tweet#autolink'] = testCase({
     'links urls in tweet': function (test) {

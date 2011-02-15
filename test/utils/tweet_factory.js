@@ -1,4 +1,4 @@
-var Tweet = require('../lib/tweet').Tweet;
+var Tweet = require('../../lib/tweet').Tweet;
 
 function createStatus() {
     return new Tweet(_createStatusObj());

@@ -1,5 +1,5 @@
 var testCase = require('nodeunit').testCase,
-    Url = require('../lib/url_adapter').UrlAdapter;
+    Url = require('../../lib/url_adapter').UrlAdapter;
 
 exports['UrlAdapter#hasQueryString'] = testCase({
     'returns false for url without query string': function (test) {

@@ -1,7 +1,7 @@
 var testCase = require('nodeunit').testCase,
-    factory = require('./tweet_factory'),
-    Tweet = require('../lib/tweet').Tweet,
-    filter = require('../lib/hashtag_filter');
+    factory = require('../utils/tweet_factory'),
+    Tweet = require('../../lib/tweet').Tweet,
+    filter = require('../../lib/hashtag_filter');
 
 const UNWANTED_HASHTAG = 'unwanted';
 
