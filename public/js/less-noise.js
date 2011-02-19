@@ -21,6 +21,8 @@ $(document).ready(function () {
             };
         }
 
-        $('#tweetTemplate').tmpl(data).prependTo('#tweets');
+        var template = $('#tweetTemplate').tmpl(data);
+        template.find('time.relative').timeago();
+        template.prependTo('#tweets');
     });
 });

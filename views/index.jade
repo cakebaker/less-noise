@@ -10,8 +10,9 @@ script(id: 'tweetTemplate', type: 'text/html')
         span.rt ♻ by \${retweeter}
         | {{/if}}
       .msg {{html text}}
-      .time \${created_at}
+      time.relative(datetime: '${created_at}')
 script(src: '/js/jquery-1.5.min.js')
 script(src: '/js/jquery.tmpl.min.js')
+script(src: '/js/jquery.timeago.js')
 script(src: '/socket.io/socket.io.js')
 script(src: '/js/less-noise.js')
