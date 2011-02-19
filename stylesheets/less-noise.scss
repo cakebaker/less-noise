@@ -1,0 +1,62 @@
+@import "compass/reset";
+@import "compass/css3";
+@import "blueprint";
+
+@include blueprint-typography-defaults;
+
+body {
+  @include blueprint-typography-body(14px);
+  background: #444;
+}
+
+#header {
+  height: 20px;
+}
+
+#content {
+  @include container;
+  @include border-radius;
+  background: #ddd;
+}
+
+#tweets {
+  @include column(24, true);
+}
+
+.tweet {
+  @include container;
+  border-bottom: 1px solid #bbb;
+  padding: 0.5em 1em;
+  &:hover {
+    background: #ccc;
+  }
+}
+
+.avatar {
+  @include column(1);
+  margin-right: 2em;
+}
+
+.data {
+  @include column(22, true);
+}
+
+.screenname {
+  float: left;
+  font-weight: bold;
+  margin-right: 0.5em;
+}
+
+.name {
+  color: #888;
+  font-size: smaller;
+  line-height: 1.8;
+}
+
+.msg {
+}
+
+.time {
+  color: #888;
+  font-size: smaller;
+}

@@ -6,13 +6,18 @@ $(document).ready(function () {
 
         if (!tweet.data.retweeted_status) {
             data = { screen_name: tweet.data.user.screen_name,
+                     name: tweet.data.user.name,
                      profile_image_url: tweet.data.user.profile_image_url,
-                     text: tweet.data.text
+                     text: tweet.data.text,
+                     created_at: tweet.data.created_at
             };
         } else {
             data = { screen_name: tweet.data.retweeted_status.user.screen_name,
+                     name: tweet.data.retweeted_status.user.name,
                      profile_image_url: tweet.data.retweeted_status.user.profile_image_url,
-                     text: tweet.data.retweeted_status.text
+                     text: tweet.data.retweeted_status.text,
+                     created_at: tweet.data.retweeted_status.created_at,
+                     retweeter: tweet.data.user.screen_name
             };
         }
 

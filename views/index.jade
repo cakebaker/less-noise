@@ -1,10 +1,16 @@
-p welcome to less-noise :)
 #tweets
 script(id: 'tweetTemplate', type: 'text/html')
   .tweet
-    img(src: '${profile_image_url}', height: 48, width: 48)
-    strong \${screen_name}
-    p {{html text}}
+    .avatar
+      img(src: '${profile_image_url}', height: 48, width: 48)
+    .data
+      .screenname \${screen_name}
+      .name \${name}
+        | {{if retweeter}}
+        span.rt ♻ by \${retweeter}
+        | {{/if}}
+      .msg {{html text}}
+      .time \${created_at}
 script(src: '/js/jquery-1.5.min.js')
 script(src: '/js/jquery.tmpl.min.js')
 script(src: '/socket.io/socket.io.js')
