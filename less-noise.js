@@ -9,7 +9,7 @@
  * Redistributions of files must retain the above copyright notice.
  */
 
-var express = require('express'),
+var webserver = require('./lib/webserver'),
     io = require('socket.io'),
     config = require('./config').config(),
     Expander = require('./lib/tweet_url_expander').TweetUrlExpander,
@@ -21,21 +21,7 @@ var express = require('express'),
     twitter = require('./lib/twitter').Twitter(config);
 
 var expander = new Expander();
-
-var app = express.createServer();
-app.use(express.staticProvider(__dirname + '/public'));
-app.use(express.bodyDecoder());
-
-app.get('/', function (request, response) {
-    response.render('index.jade');
-});
-
-app.post('/statuses/update', function (request, response) {
-    twitter.update(request.body.status.text);
-});
-
-app.listen(config.port);
-var socket = io.listen(app);
+var socket = io.listen(webserver.start(config.port, twitter));
 
 parser.on('tweet', function (data) {
     var tweet = new Tweet(data);
