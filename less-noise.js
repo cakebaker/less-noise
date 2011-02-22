@@ -1,3 +1,14 @@
+/**
+ * Main file of less-noise
+ *
+ * Requires node.js 0.4.0
+ *
+ * Copyright (c) by Daniel Hofstetter (daniel.hofstetter@42dh.com, http://cakebaker.42dh.com)
+ *
+ * Licensed under the MIT License: http://opensource.org/licenses/mit-license
+ * Redistributions of files must retain the above copyright notice.
+ */
+
 var express = require('express'),
     io = require('socket.io'),
     config = require('./config').config(),
