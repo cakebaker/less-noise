@@ -9,14 +9,35 @@ body {
   background: #444;
 }
 
+#tweetbutton {
+  font-size: 14px;
+  padding: 0.4em 0.5em;
+}
+
 #header {
-  height: 20px;
 }
 
 #content {
   @include container;
+}
+
+#tweetform, #tweets {
   @include border-radius;
   background: #ddd;
+}
+
+#tweetform {
+  margin: 1.5em 0 0.5em 0;
+  padding: 0.8em 0.8em;
+}
+
+#tweetinput {
+  @include border-radius;
+  background: #D5E8DC;
+  border: 1px solid #aaa;
+  padding: 0.5em;
+  font-size: 14px;
+  width: 30em;
 }
 
 #tweets {

@@ -1,5 +1,15 @@
 $(document).ready(function () {
-    var socket = new io.Socket('localhost', {port: 3000});
+    $('#tweetbutton').disableIfEmpty('#tweetinput');
+
+    $('#newtweet').submit(function () {
+        $.post('/statuses/update', $('#newtweet').serialize(), function (data) {
+            $('#tweetinput').val('');
+        });
+
+        return false;
+    });
+
+    var socket = new io.Socket('localhost', { port: 3000 });
     socket.connect();
     socket.on('message', function (tweet) {
         var data;
