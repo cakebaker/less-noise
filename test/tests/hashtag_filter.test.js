@@ -1,14 +1,14 @@
 var testCase = require('nodeunit').testCase,
     factory = require('../utils/tweet_factory'),
     Tweet = require('../../lib/tweet').Tweet,
-    filter = require('../../lib/hashtag_filter');
+    HashtagFilter = require('../../lib/hashtag_filter');
 
 const UNWANTED_HASHTAG = 'unwanted';
 
 exports['HashtagFilter#accept'] = testCase({
     setUp: function (callback) {
-        var config = { hashtagsToFilter: [UNWANTED_HASHTAG] };
-        this.hashtagFilter = new filter.HashtagFilter(config);
+        var config = { hashtags: [UNWANTED_HASHTAG] };
+        this.hashtagFilter = new HashtagFilter(config);
         callback();
     },
     'accepts tweet without hashtags': function (test) {

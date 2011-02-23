@@ -1,14 +1,14 @@
 var testCase = require('nodeunit').testCase,
     factory = require('../utils/tweet_factory'),
     Tweet = require('../../lib/tweet').Tweet,
-    filter = require('../../lib/url_filter');
+    UrlFilter = require('../../lib/url_filter');
 
 const UNWANTED_DOMAIN = 'example.org';
 
 exports['UrlFilter#accept'] = testCase({
     setUp: function (callback) {
-        var config = { domainsToFilter: [UNWANTED_DOMAIN] };
-        this.urlFilter = new filter.UrlFilter(config);
+        var config = { domains: [UNWANTED_DOMAIN] };
+        this.urlFilter = new UrlFilter(config);
         callback();
     },
     'accepts tweet without urls': function (test) {

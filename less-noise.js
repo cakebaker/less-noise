@@ -12,10 +12,8 @@ var webserver = require('./lib/webserver'),
     config = require('./config').config(),
     Expander = require('./lib/tweet_url_expander').TweetUrlExpander,
     Tweet = require('./lib/tweet').Tweet,
-    linkHelper = require('./lib/link_helper'),
     parser = require('./lib/parser').Parser(),
-    urlFilter = require('./lib/url_filter').UrlFilter(config),
-    hashtagFilter = require('./lib/hashtag_filter').HashtagFilter(config),
+    filterChain = require('./lib/filter_chain').FilterChain(config.filters),
     twitter = require('./lib/twitter').Twitter(config);
 
 var expander = new Expander();
@@ -24,16 +22,16 @@ var socket = io.listen(webserver.start(config.port, twitter));
 parser.on('tweet', function (data) {
     var tweet = new Tweet(data);
 
-    if (hashtagFilter.accept(tweet)) {
-        if (urlFilter.accept(tweet)) {
-            tweet.expandUrls(expander);
-        }
-    }
+    filterChain.accept(tweet, function () {
+        tweet.expandUrls(expander);
+    });
 });
 
 expander.on('expanded', function (tweet) {
-    tweet.autolink();
-    socket.broadcast(tweet);
+    filterChain.acceptExpandedUrls(tweet, function () {
+        tweet.autolink();
+        socket.broadcast(tweet);
+    });
 });
 
 twitter.stream(parser);
