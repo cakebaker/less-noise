@@ -12,6 +12,9 @@ var config = function () {
                 },
                 url_filter: {
                     domains: ['4sq.com', 'gowal.la', 'instagr.am', 'rnkr.com', 'tcrn.ch', 'youtu.be', 'youtube.com'],
+                },
+                user_mentions_filter: {
+                    users: []
                 }
             }
         }
