@@ -1,7 +1,7 @@
 var Tweet = require('../../lib/tweet').Tweet;
 
-function createStatus() {
-    return new Tweet(_createStatusObj());
+function createStatus(message) {
+    return new Tweet(_createStatusObj(message));
 }
 
 exports.createStatus = createStatus;
@@ -33,8 +33,8 @@ function createStatusWithUserMentions(userMentions, message) {
 
 exports.createStatusWithUserMentions = createStatusWithUserMentions;
 
-function createRetweet() {
-    return new Tweet(_createRetweetObj());
+function createRetweet(message) {
+    return new Tweet(_createRetweetObj(message));
 }
 
 exports.createRetweet = createRetweet;

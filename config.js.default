@@ -10,6 +10,9 @@ var config = function () {
                 hashtag_filter: {
                     hashtags: []
                 },
+                keyword_filter: {
+                    keywords: []
+                },
                 url_filter: {
                     domains: ['4sq.com', 'gowal.la', 'instagr.am', 'rnkr.com', 'tcrn.ch', 'youtu.be', 'youtube.com'],
                 },
