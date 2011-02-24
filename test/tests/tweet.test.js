@@ -257,6 +257,31 @@ exports['Tweet#hasUrls'] = testCase({
     }
 });
 
+exports['Tweet#hasUserMentions'] = testCase({
+    'returns false for tweet without user mentions': function (test) {
+        var tweets = [factory.createStatus, factory.createRetweet];
+        var i, tweet;
+
+        for (i = 0; i < tweets.length; i++) {
+            tweet = tweets[i].call(null);
+            test.strictEqual(false, tweet.hasUserMentions());
+        }
+
+        test.done();
+    },
+    'returns true for tweet with user mentions': function (test) {
+        var tweets = [factory.createStatusWithUserMentions, factory.createRetweetWithUserMentions];
+        var i, tweet;
+
+        for (i = 0; i < tweets.length; i++) {
+            tweet = tweets[i].call(null, ['testuser']);
+            test.strictEqual(true, tweet.hasUserMentions());
+        }
+
+        test.done();
+    }
+});
+
 exports['Tweet#isRetweet'] = testCase({
     'returns false for a status': function (test) {
         var tweet = factory.createStatus();
