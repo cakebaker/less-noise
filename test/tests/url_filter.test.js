@@ -1,7 +1,7 @@
 var testCase = require('nodeunit').testCase,
     factory = require('../utils/tweet_factory'),
     Tweet = require('../../lib/tweet').Tweet,
-    UrlFilter = require('../../lib/url_filter');
+    UrlFilter = require('../../lib/filters/url_filter');
 
 const UNWANTED_DOMAIN = 'example.org';
 

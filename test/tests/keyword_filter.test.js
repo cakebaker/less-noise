@@ -1,7 +1,7 @@
 var testCase = require('nodeunit').testCase,
     factory = require('../utils/tweet_factory'),
     Tweet = require('../../lib/tweet').Tweet,
-    KeywordFilter = require('../../lib/keyword_filter');
+    KeywordFilter = require('../../lib/filters/keyword_filter');
 
 const UNWANTED_KEYWORD = 'test';
 

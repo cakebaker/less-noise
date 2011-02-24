@@ -1,7 +1,7 @@
 var testCase = require('nodeunit').testCase,
     factory = require('../utils/tweet_factory'),
     Tweet = require('../../lib/tweet').Tweet,
-    UserMentionsFilter = require('../../lib/user_mentions_filter');
+    UserMentionsFilter = require('../../lib/filters/user_mentions_filter');
 
 const UNWANTED_USER_MENTION = 'testuser';
 
