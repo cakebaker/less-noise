@@ -13,6 +13,9 @@ var config = function () {
                 keyword_filter: {
                     keywords: []
                 },
+                retweet_filter: {
+                    users: []
+                },
                 url_filter: {
                     domains: ['4sq.com', 'gowal.la', 'instagr.am', 'rnkr.com', 'tcrn.ch', 'youtu.be', 'youtube.com'],
                 },

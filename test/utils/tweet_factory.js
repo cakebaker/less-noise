@@ -6,6 +6,15 @@ function createStatus(message) {
 
 exports.createStatus = createStatus;
 
+function createStatusFrom(username) {
+    var data = _createStatusObj();
+    data.user = _createUserObj(username);
+
+    return new Tweet(data);
+}
+
+exports.createStatusFrom = createStatusFrom;
+
 function createStatusWithHashtags(hashtags) {
     var data = _createStatusObj();
     data.entities.hashtags = _createHashtagsObj(hashtags);
@@ -38,6 +47,15 @@ function createRetweet(message) {
 }
 
 exports.createRetweet = createRetweet;
+
+function createRetweetFrom(username) {
+    var data = _createRetweetObj();
+    data.user = _createUserObj(username);
+
+    return new Tweet(data);
+}
+
+exports.createRetweetFrom = createRetweetFrom;
 
 function createRetweetWithHashtags(hashtags) {
     var data = _createRetweetObj();
@@ -94,6 +112,10 @@ function _createUserMentionsObj(userMentions) {
     }
 
     return result;
+}
+
+function _createUserObj(username) {
+    return { screen_name: username };
 }
 
 function _createRetweetObj(message) {
