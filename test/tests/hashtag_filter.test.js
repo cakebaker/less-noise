@@ -43,5 +43,16 @@ exports['HashtagFilter#accept'] = testCase({
         }
 
         test.done();
+    },
+    'rejects tweet with hashtag in filter list (case-insensitive)': function (test) {
+        var tweets = [factory.createStatusWithHashtags, factory.createRetweetWithHashtags];
+        var i, tweet;
+
+        for (i = 0; i < tweets.length; i++) {
+            tweet = tweets[i].call(null, [UNWANTED_HASHTAG.toUpperCase()]);
+            test.strictEqual(false, this.hashtagFilter.accept(tweet));
+        }
+
+        test.done();
     }
 });
