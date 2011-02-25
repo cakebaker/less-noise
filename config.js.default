@@ -22,6 +22,8 @@ var config = function () {
                 user_mentions_filter: {
                     users: []
                 }
+            },
+            afterUrlExpansionFilters: {
             }
         }
     }
