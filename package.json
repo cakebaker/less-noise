@@ -1,11 +1,11 @@
 { "name" : "less-noise",
   "description" : "A twitter client",
-  "version" : "0.0.1",
+  "version" : "0.0.2",
   "author" : "Daniel Hofstetter <daniel.hofstetter@42dh.com>",
   "main" : "less-noise",
   "engines" : { "node" : ">= 0.4.0" },
   "dependencies":
-    { "socket.io": ">= 0.6.12",
+    { "socket.io": ">= 0.6.15",
       "oauth": ">= 0.9.0",
       "express": ">= 1.0.7",
       "jade": ">= 0.6.3",
