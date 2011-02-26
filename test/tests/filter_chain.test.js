@@ -1,4 +1,5 @@
 var testCase = require('nodeunit').testCase,
+    factory = require('../utils/tweet_factory'),
     HashtagFilter = require('../../lib/filters/hashtag_filter');
     FilterChain = require('../../lib/filter_chain').FilterChain;
 
@@ -31,3 +32,34 @@ exports['FilterChain()'] = testCase({
         test.done();
     }
 });
+
+exports['FilterChain#_filterTweet'] = testCase({
+    setUp: function (callback) {
+        var config = { beforeUrlExpansionFilters: {}, afterUrlExpansionFilters: {} };
+        this.chain = new FilterChain(config);
+
+        callback();
+    },
+    'it calls acceptanceCallback if tweet is accepted': function (test) {
+        test.expect(1);
+        this.chain._filterTweet([new DummyFilter(true)], factory.createStatus(), function () {
+            test.ok(true);
+        });
+        test.done();
+    },
+    'it does not call acceptanceCallback if tweet is rejected': function (test) {
+        test.expect(0);
+        this.chain._filterTweet([new DummyFilter(false)], factory.createStatus(), function () {
+            test.ok(false);
+        });
+        test.done();
+    }
+});
+
+function DummyFilter(acceptTweet) {
+    this.acceptTweet = acceptTweet;
+}
+
+DummyFilter.prototype.accept = function (tweet) {
+    return this.acceptTweet;
+}
