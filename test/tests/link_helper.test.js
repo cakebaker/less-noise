@@ -52,5 +52,10 @@ exports['linkUserMentions'] = testCase({
         var text = 'hello @test';
         test.equals('hello @<a href="http://twitter.com/test">test</a>', linkHelper.linkUserMentions(text, ['test']));
         test.done();
+    },
+    'text mentioning a user (case-insensitive)': function (test) {
+        var text = 'hello @Test';
+        test.equals('hello @<a href="http://twitter.com/Test">Test</a>', linkHelper.linkUserMentions(text, ['test']));
+        test.done();
     }
 });
