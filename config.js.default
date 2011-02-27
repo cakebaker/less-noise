@@ -8,18 +8,23 @@ var config = function () {
         filters: {
             beforeUrlExpansionFilters: {
                 hashtag_filter: {
+                    enabled: false,
                     hashtags: []
                 },
                 keyword_filter: {
+                    enabled: false,
                     keywords: []
                 },
                 retweet_filter: {
+                    enabled: false,
                     users: []
                 },
                 url_filter: {
+                    enabled: true,
                     domains: ['4sq.com', 'gowal.la', 'instagr.am', 'rnkr.com', 'tcrn.ch', 'youtu.be', 'youtube.com'],
                 },
                 user_mentions_filter: {
+                    enabled: false,
                     users: []
                 }
             },
