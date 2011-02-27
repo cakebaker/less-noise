@@ -13,6 +13,15 @@ exports['FilterChain()'] = testCase({
 
         test.done();
     },
+    'it should not load any disabled filters': function (test) {
+        var config = { beforeUrlExpansionFilters: { hashtag_filter: { enabled: false } }, afterUrlExpansionFilters: { hashtag_filter: { enabled: false } } };
+        var chain = new FilterChain(config);
+
+        test.deepEqual([], chain.beforeFilters);
+        test.deepEqual([], chain.afterFilters);
+
+        test.done();
+    },
     'it should instantiate the specified before filter': function (test) {
         var config = { beforeUrlExpansionFilters: { hashtag_filter: { hashtags: [] } }, afterUrlExpansionFilters: {} };
         var chain = new FilterChain(config);
