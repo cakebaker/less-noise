@@ -7,6 +7,9 @@ var config = function () {
         port: 3000,
         filters: {
             beforeUrlExpansionFilters: {
+                foreign_characters_filter: {
+                    enabled: false
+                },
                 hashtag_filter: {
                     enabled: false,
                     hashtags: []
