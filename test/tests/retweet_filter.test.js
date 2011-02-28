@@ -1,6 +1,5 @@
 var testCase = require('nodeunit').testCase,
     factory = require('../utils/tweet_factory'),
-    Tweet = require('../../lib/tweet').Tweet,
     RetweetFilter = require('../../lib/filters/retweet_filter');
 
 const USER_WITH_UNWANTED_RETWEETS = 'testuser';
