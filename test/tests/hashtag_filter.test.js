@@ -11,47 +11,47 @@ exports['HashtagFilter#accept'] = testCase({
         callback();
     },
     'accepts tweet without hashtags': function (test) {
-        var tweets = [factory.createStatus, factory.createRetweet];
-        var i, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            tweet = tweets[i].call(null);
-            test.strictEqual(true, this.hashtagFilter.accept(tweet));
-        }
+        [factory.createStatus, factory.createRetweet].forEach(function (createTweet) {
+            var tweet = createTweet();
+            test.strictEqual(true, that.hashtagFilter.accept(tweet));
+        });
 
         test.done();
     },
     'accepts tweet with hashtag not in filter list': function (test) {
-        var tweets = [factory.createStatusWithHashtags, factory.createRetweetWithHashtags];
-        var i, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            tweet = tweets[i].call(null, ['test']);
-            test.strictEqual(true, this.hashtagFilter.accept(tweet));
-        }
+        getTweetCreationFunctions().forEach(function (createTweet) {
+            var tweet = createTweet(['test']);
+            test.strictEqual(true, that.hashtagFilter.accept(tweet));
+        });
 
         test.done();
     },
     'rejects tweet with hashtag in filter list': function (test) {
-        var tweets = [factory.createStatusWithHashtags, factory.createRetweetWithHashtags];
-        var i, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            tweet = tweets[i].call(null, [UNWANTED_HASHTAG]);
-            test.strictEqual(false, this.hashtagFilter.accept(tweet));
-        }
+        getTweetCreationFunctions().forEach(function (createTweet) {
+            var tweet = createTweet([UNWANTED_HASHTAG]);
+            test.strictEqual(false, that.hashtagFilter.accept(tweet));
+        });
 
         test.done();
     },
     'rejects tweet with hashtag in filter list (case-insensitive)': function (test) {
-        var tweets = [factory.createStatusWithHashtags, factory.createRetweetWithHashtags];
-        var i, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            tweet = tweets[i].call(null, [UNWANTED_HASHTAG.toUpperCase()]);
-            test.strictEqual(false, this.hashtagFilter.accept(tweet));
-        }
+        getTweetCreationFunctions().forEach(function (createTweet) {
+            var tweet = createTweet([UNWANTED_HASHTAG.toUpperCase()]);
+            test.strictEqual(false, that.hashtagFilter.accept(tweet));
+        });
 
         test.done();
     }
 });
+
+function getTweetCreationFunctions() {
+    return [factory.createStatusWithHashtags, factory.createRetweetWithHashtags];
+}

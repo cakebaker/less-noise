@@ -11,36 +11,37 @@ exports['UserMentionsFilter#accept'] = testCase({
         callback();
     },
     'accepts tweet without user mentions': function (test) {
-        var tweets = [factory.createStatus, factory.createRetweet];
-        var i, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            tweet = tweets[i].call(null);
-            test.strictEqual(true, this.userMentionsFilter.accept(tweet));
-        }
+        [factory.createStatus, factory.createRetweet].forEach(function (createTweet) {
+            var tweet = createTweet();
+            test.strictEqual(true, that.userMentionsFilter.accept(tweet));
+        });
 
         test.done();
     },
     'accepts tweet with user mention not in filter list': function (test) {
-        var tweets = [factory.createStatusWithUserMentions, factory.createRetweetWithUserMentions];
-        var i, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            tweet = tweets[i].call(null, ['username']);
-            test.strictEqual(true, this.userMentionsFilter.accept(tweet));
-        }
+        getTweetCreationFunctions().forEach(function (createTweet) {
+            var tweet = createTweet(['username']);
+            test.strictEqual(true, that.userMentionsFilter.accept(tweet));
+        });
 
         test.done();
     },
     'rejects tweet with user mention in filter list': function (test) {
-        var tweets = [factory.createStatusWithUserMentions, factory.createRetweetWithUserMentions];
-        var i, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            tweet = tweets[i].call(null, [UNWANTED_USER_MENTION]);
-            test.strictEqual(false, this.userMentionsFilter.accept(tweet));
-        }
+        getTweetCreationFunctions().forEach(function (createTweet) {
+            var tweet = createTweet([UNWANTED_USER_MENTION]);
+            test.strictEqual(false, that.userMentionsFilter.accept(tweet));
+        });
 
         test.done();
     }
 });
+
+function getTweetCreationFunctions() {
+    return [factory.createStatusWithUserMentions, factory.createRetweetWithUserMentions];
+}

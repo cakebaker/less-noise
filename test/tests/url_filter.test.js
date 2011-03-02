@@ -11,40 +11,40 @@ exports['UrlFilter#accept'] = testCase({
         callback();
     },
     'accepts tweet without urls': function (test) {
-        var tweets = [factory.createStatus, factory.createRetweet];
-        var i, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            tweet = tweets[i].call(null);
-            test.strictEqual(true, this.urlFilter.accept(tweet));
-        }
+        [factory.createStatus, factory.createRetweet].forEach(function (createTweet) {
+            var tweet = createTweet();
+            test.strictEqual(true, that.urlFilter.accept(tweet));
+        });
 
         test.done();
     },
     'accepts tweet with url not in filter list': function (test) {
-        var tweets = [factory.createStatusWithUrls, factory.createRetweetWithUrls];
-        var i, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            tweet = tweets[i].call(null, ['http://example.com']);
-            test.strictEqual(true, this.urlFilter.accept(tweet));
-        }
+        getTweetCreationFunctions().forEach(function (createTweet) {
+            var tweet = createTweet(['http://example.com']);
+            test.strictEqual(true, that.urlFilter.accept(tweet));
+        });
 
         test.done();
     },
     'rejects tweet with url in filter list': function (test) {
         var unwantedUrls = [['http://' + UNWANTED_DOMAIN], ['https://' + UNWANTED_DOMAIN]];
-        var tweets = [factory.createStatusWithUrls, factory.createRetweetWithUrls];
-        var i, j, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            for (j = 0; j < unwantedUrls.length; j++) {
-                tweet = tweets[i].call(null, unwantedUrls[j]);
-                test.strictEqual(false, this.urlFilter.accept(tweet));
-            }
-        }
+        getTweetCreationFunctions().forEach(function (createTweet) {
+            unwantedUrls.forEach(function (unwantedUrl) {
+                var tweet = createTweet(unwantedUrl);
+                test.strictEqual(false, that.urlFilter.accept(tweet));
+            });
+        });
 
         test.done();
     }
 });
 
+function getTweetCreationFunctions() {
+    return [factory.createStatusWithUrls, factory.createRetweetWithUrls];
+}

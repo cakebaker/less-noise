@@ -11,28 +11,30 @@ exports['KeywordFilter#accept'] = testCase({
         callback();
     },
     'accepts tweet without keyword': function (test) {
-        var tweets = [factory.createStatus, factory.createRetweet];
-        var i, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            tweet = tweets[i].call(null);
-            test.strictEqual(true, this.keywordFilter.accept(tweet));
-        }
+        getTweetCreationFunctions().forEach(function (createTweet) {
+            var tweet = createTweet();
+            test.strictEqual(true, that.keywordFilter.accept(tweet));
+        });
 
         test.done();
     },
     'rejects tweet containing keyword': function (test) {
-        var tweets = [factory.createStatus, factory.createRetweet];
         var messages = ['a test status', 'a TeSt status', 'test status', 'status test', 'a #test status'];
-        var i, j, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            for (j = 0; j < messages.length; j++) {
-                tweet = tweets[i].call(null, messages[j]);
-                test.strictEqual(false, this.keywordFilter.accept(tweet));
-            }
-        }
+        getTweetCreationFunctions().forEach(function (createTweet) {
+            messages.forEach(function (message) {
+                var tweet = createTweet(message);
+                test.strictEqual(false, that.keywordFilter.accept(tweet));
+            });
+        });
 
         test.done();
     },
 });
+
+function getTweetCreationFunctions() {
+    return [factory.createStatus, factory.createRetweet];
+}

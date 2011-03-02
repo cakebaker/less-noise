@@ -11,13 +11,12 @@ exports['RetweetFilter#accept'] = testCase({
         callback();
     },
     'accepts tweet from user not in filter list': function (test) {
-        var tweets = [factory.createStatusFrom, factory.createRetweetFrom];
-        var i, tweet;
+        var that = this;
 
-        for (i = 0; i < tweets.length; i++) {
-            tweet = tweets[i].call(null, 'someuser');
-            test.strictEqual(true, this.retweetFilter.accept(tweet));
-        }
+        [factory.createStatusFrom, factory.createRetweetFrom].forEach(function (createTweet) {
+            var tweet = createTweet('someuser');
+            test.strictEqual(true, that.retweetFilter.accept(tweet));
+        });
 
         test.done();
     },
