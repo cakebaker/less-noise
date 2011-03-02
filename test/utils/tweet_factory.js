@@ -85,31 +85,31 @@ function createRetweetWithUserMentions(userMentions, message) {
 exports.createRetweetWithUserMentions = createRetweetWithUserMentions;
 
 function _createHashtagsObj(hashtags) {
-    var i, result = [];
+    var result = [];
 
-    for (i = 0; i < hashtags.length; i++) {
-        result.push({ text: hashtags[i] });
-    }
+    hashtags.forEach(function (hashtag) {
+        result.push({ text: hashtag });
+    });
 
     return result;
 }
 
 function _createUrlsObj(urls, expandedUrls) {
-    var i, result = [];
+    var result = [];
 
-    for (i = 0; i < urls.length; i++) {
-        result.push({ url: urls[i], expanded_url: (expandedUrls === undefined) ? '' : expandedUrls[i] });
-    }
+    urls.forEach(function (url, i) {
+        result.push({ url: url, expanded_url: (expandedUrls === undefined) ? '' : expandedUrls[i] });
+    });
 
     return result;
 }
 
 function _createUserMentionsObj(userMentions) {
-    var i, result = [];
+    var result = [];
 
-    for (i = 0; i < userMentions.length; i++) {
-        result.push({ screen_name: userMentions[i] });
-    }
+    userMentions.forEach(function (userMention) {
+        result.push({ screen_name: userMention });
+    });
 
     return result;
 }
