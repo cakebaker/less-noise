@@ -7,13 +7,13 @@ const URL_TWO = 'http://example.org';
 exports['cleanUrls'] = testCase({
     'returns the same urls if they are clean': function (test) {
         var urls = ['http://example.com', 'http://example.org'];
-        var expectedUrls = ['http://example.com', 'http://example.org'];
+        var expectedUrls = ['http://example.com/', 'http://example.org/'];
         test.deepEqual(expectedUrls, linkHelper.cleanUrls(urls));
         test.done();
     },
     'removes feedburner params': function (test) {
         var urls = ['http://x.ch?utm_campaign=test', 'http://x.ch?utm_source=test', 'http://x.ch?utm_medium=test', 'http://x.ch?utm_content=test'];
-        var expectedUrls = ['http://x.ch', 'http://x.ch', 'http://x.ch', 'http://x.ch'];
+        var expectedUrls = ['http://x.ch/', 'http://x.ch/', 'http://x.ch/', 'http://x.ch/'];
         test.deepEqual(expectedUrls, linkHelper.cleanUrls(urls));
         test.done();
     }

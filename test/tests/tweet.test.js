@@ -74,8 +74,8 @@ exports['Tweet#expandUrls'] = testCase({
 
             expander.on('expanded', function (tweet) {
                 var status = tweet.getStatus();
-                test.strictEqual('http://example.com?test=testvalue', status.entities.urls[0].expanded_url);
-                test.strictEqual('http://example.org', status.entities.urls[1].expanded_url);
+                test.strictEqual('http://example.com/?test=testvalue', status.entities.urls[0].expanded_url);
+                test.strictEqual('http://example.org/', status.entities.urls[1].expanded_url);
             });
             tweet.expandUrls(expander);
         });
