@@ -1,15 +1,15 @@
 { "name" : "less-noise",
   "description" : "A twitter client",
-  "version" : "0.0.2",
+  "version" : "0.0.3",
   "author" : "Daniel Hofstetter <daniel.hofstetter@42dh.com>",
   "main" : "less-noise",
-  "engines" : { "node" : ">= 0.4.0" },
+  "engines" : { "node" : ">= 0.4.2" },
   "dependencies":
-    { "socket.io": ">= 0.6.15",
+    { "socket.io": ">= 0.6.16",
       "oauth": ">= 0.9.0",
-      "express": ">= 2.0.0beta",
-      "jade": ">= 0.6.3",
-      "url-expander": ">= 0.0.3"
+      "express": ">= 2.0.0beta2",
+      "jade": ">= 0.8.3",
+      "url-expander": ">= 0.0.4"
     },
   "devDependencies" : { "nodeunit" : "*" },
   "licenses" : [ { "type" : "MIT" } ],
