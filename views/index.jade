@@ -3,7 +3,7 @@
     input#tweetinput(placeholder: "What's happening?", name: "status[text]")
     button#tweetbutton(type: "submit") Tweet
 #tweets
-script(id: 'tweetTemplate', type: 'text/html')
+script(id: 'tweetTemplate', type: 'text/x-jquery-tmpl')
   .tweet
     .avatar
       img(src: '${profile_image_url}', height: 48, width: 48)
