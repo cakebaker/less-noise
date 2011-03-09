@@ -9,7 +9,7 @@ $(document).ready(function () {
         return false;
     });
 
-    var socket = new io.Socket('localhost', { port: 3000 });
+    var socket = new io.Socket('localhost', { port: $('script[data-port]').data("port") });
     socket.connect();
     socket.on('message', function (tweet) {
         var data;
