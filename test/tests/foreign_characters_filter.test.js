@@ -47,6 +47,16 @@ exports['ForeignCharactersFilter#accept'] = testCase({
         });
 
         test.done();
+    },
+    'rejects tweet with Indian characters': function (test) {
+        var that = this;
+
+        getTweetCreationFunctions().forEach(function (createTweet) {
+            var tweet = createTweet('ਖਾ-ਖਾ ਵਧਿਆ ਪੇਟ ਬਾਬੇ ਦਾ, ਚਾਰ ਕੁਵਿੰਟਲ ਵੇਟ ਬਾਬੇ ਦਾ ਬਾਬਾ ਸੱਦਣਾ ਮਹਿੰਗਾ ਪੈਂਦਾ, ਲੱਖਾਂ ਦੇ ਵਿਚ ਪੈਸੇ ਲੈਂਦਾ ਹੱਦੋਂ ਬਾਹਲ');
+            test.strictEqual(false, that.foreignCharsFilter.accept(tweet));
+        });
+
+        test.done();
     }
 });
 
